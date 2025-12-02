@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <cmath>
 
 #define P(param) std::cout << (param) << "\n"
 
@@ -39,4 +40,9 @@ std::vector<std::string> load(const std::string&& file_name)
     }
 
     return res;
+}
+
+u64 digit_length(auto num) {
+    if (num == 0) return 1;
+    return trunc(log10(num)) + 1;
 }
