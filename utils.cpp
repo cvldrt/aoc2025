@@ -3,11 +3,52 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <set>
 
 #define P(param) std::cout << (param) << "\n"
 
 typedef uint64_t u64;
 typedef int64_t i64;
+
+struct ranges {
+    std::set<std::pair<u64, u64>> r;
+
+    void add(u64 from, u64 to)
+    {
+        r.insert({from, to});
+    }
+
+
+    bool contains(u64 needle)
+    {
+        for (auto [from, to] : r) {
+            if (needle >= from && needle <= to) return true;
+        }
+
+        return false;
+    }
+
+    void merge () {
+        if (r.empty()) return;
+
+        auto current = *r.begin();
+
+        std::set<std::pair<u64, u64>> tmp;
+        
+        for (auto[from, to] : r) {
+            if (current.second >= from) {
+                current.second = std::max(current.second, to);
+            } else {
+                tmp.insert(current);
+                current = {from, to};
+            }
+        }
+
+        tmp.insert(current);
+
+        r = tmp;
+    }
+};
 
 void print_vec(auto vec, char delim = '\n')
 {
